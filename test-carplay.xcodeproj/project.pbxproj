@@ -1,0 +1,513 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		87BDE8FE2B13580A008E70BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE8FD2B13580A008E70BE /* AppDelegate.swift */; };
+		87BDE9002B13580A008E70BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE8FF2B13580A008E70BE /* SceneDelegate.swift */; };
+		87BDE9022B13580A008E70BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE9012B13580A008E70BE /* ViewController.swift */; };
+		87BDE9052B13580A008E70BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87BDE9032B13580A008E70BE /* Main.storyboard */; };
+		87BDE9072B13580B008E70BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87BDE9062B13580B008E70BE /* Assets.xcassets */; };
+		87BDE90A2B13580B008E70BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87BDE9082B13580B008E70BE /* LaunchScreen.storyboard */; };
+		87BDE9152B13580B008E70BE /* test_carplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE9142B13580B008E70BE /* test_carplayTests.swift */; };
+		87BDE92E2B135AF8008E70BE /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE92D2B135AF8008E70BE /* CarPlaySceneDelegate.swift */; };
+		87BDE9382B17CC0B008E70BE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE9372B17CC0B008E70BE /* User.swift */; };
+		87BDE93A2B17D025008E70BE /* FalseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BDE9392B17D025008E70BE /* FalseData.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		87BDE9112B13580B008E70BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87BDE8F22B135809008E70BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 87BDE8F92B13580A008E70BE;
+			remoteInfo = "test-carplay";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		87BDE8FA2B13580A008E70BE /* test-carplay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "test-carplay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		87BDE8FD2B13580A008E70BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		87BDE8FF2B13580A008E70BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		87BDE9012B13580A008E70BE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		87BDE9042B13580A008E70BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		87BDE9062B13580B008E70BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		87BDE9092B13580B008E70BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		87BDE90B2B13580B008E70BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		87BDE9102B13580B008E70BE /* test-carplayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "test-carplayTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		87BDE9142B13580B008E70BE /* test_carplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_carplayTests.swift; sourceTree = "<group>"; };
+		87BDE92D2B135AF8008E70BE /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarPlaySceneDelegate.swift; sourceTree = "<group>"; };
+		87BDE92F2B135DFB008E70BE /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		87BDE9372B17CC0B008E70BE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		87BDE9392B17D025008E70BE /* FalseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FalseData.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		87BDE8F72B13580A008E70BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		87BDE90D2B13580B008E70BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		87BDE8F12B135809008E70BE = {
+			isa = PBXGroup;
+			children = (
+				87BDE8FC2B13580A008E70BE /* test-carplay */,
+				87BDE9132B13580B008E70BE /* test-carplayTests */,
+				87BDE8FB2B13580A008E70BE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		87BDE8FB2B13580A008E70BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				87BDE8FA2B13580A008E70BE /* test-carplay.app */,
+				87BDE9102B13580B008E70BE /* test-carplayTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		87BDE8FC2B13580A008E70BE /* test-carplay */ = {
+			isa = PBXGroup;
+			children = (
+				87BDE9362B17CBFF008E70BE /* Models */,
+				87BDE8FD2B13580A008E70BE /* AppDelegate.swift */,
+				87BDE8FF2B13580A008E70BE /* SceneDelegate.swift */,
+				87BDE92D2B135AF8008E70BE /* CarPlaySceneDelegate.swift */,
+				87BDE9012B13580A008E70BE /* ViewController.swift */,
+				87BDE9032B13580A008E70BE /* Main.storyboard */,
+				87BDE9062B13580B008E70BE /* Assets.xcassets */,
+				87BDE9082B13580B008E70BE /* LaunchScreen.storyboard */,
+				87BDE90B2B13580B008E70BE /* Info.plist */,
+				87BDE92F2B135DFB008E70BE /* Entitlements.plist */,
+			);
+			path = "test-carplay";
+			sourceTree = "<group>";
+		};
+		87BDE9132B13580B008E70BE /* test-carplayTests */ = {
+			isa = PBXGroup;
+			children = (
+				87BDE9142B13580B008E70BE /* test_carplayTests.swift */,
+			);
+			path = "test-carplayTests";
+			sourceTree = "<group>";
+		};
+		87BDE9362B17CBFF008E70BE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				87BDE9372B17CC0B008E70BE /* User.swift */,
+				87BDE9392B17D025008E70BE /* FalseData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		87BDE8F92B13580A008E70BE /* test-carplay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 87BDE9242B13580B008E70BE /* Build configuration list for PBXNativeTarget "test-carplay" */;
+			buildPhases = (
+				87BDE8F62B13580A008E70BE /* Sources */,
+				87BDE8F72B13580A008E70BE /* Frameworks */,
+				87BDE8F82B13580A008E70BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "test-carplay";
+			productName = "test-carplay";
+			productReference = 87BDE8FA2B13580A008E70BE /* test-carplay.app */;
+			productType = "com.apple.product-type.application";
+		};
+		87BDE90F2B13580B008E70BE /* test-carplayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 87BDE9272B13580B008E70BE /* Build configuration list for PBXNativeTarget "test-carplayTests" */;
+			buildPhases = (
+				87BDE90C2B13580B008E70BE /* Sources */,
+				87BDE90D2B13580B008E70BE /* Frameworks */,
+				87BDE90E2B13580B008E70BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				87BDE9122B13580B008E70BE /* PBXTargetDependency */,
+			);
+			name = "test-carplayTests";
+			productName = "test-carplayTests";
+			productReference = 87BDE9102B13580B008E70BE /* test-carplayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		87BDE8F22B135809008E70BE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					87BDE8F92B13580A008E70BE = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
+					87BDE90F2B13580B008E70BE = {
+						CreatedOnToolsVersion = 15.0.1;
+						TestTargetID = 87BDE8F92B13580A008E70BE;
+					};
+				};
+			};
+			buildConfigurationList = 87BDE8F52B135809008E70BE /* Build configuration list for PBXProject "test-carplay" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 87BDE8F12B135809008E70BE;
+			productRefGroup = 87BDE8FB2B13580A008E70BE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				87BDE8F92B13580A008E70BE /* test-carplay */,
+				87BDE90F2B13580B008E70BE /* test-carplayTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		87BDE8F82B13580A008E70BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87BDE90A2B13580B008E70BE /* LaunchScreen.storyboard in Resources */,
+				87BDE9072B13580B008E70BE /* Assets.xcassets in Resources */,
+				87BDE9052B13580A008E70BE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		87BDE90E2B13580B008E70BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		87BDE8F62B13580A008E70BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87BDE9022B13580A008E70BE /* ViewController.swift in Sources */,
+				87BDE8FE2B13580A008E70BE /* AppDelegate.swift in Sources */,
+				87BDE92E2B135AF8008E70BE /* CarPlaySceneDelegate.swift in Sources */,
+				87BDE93A2B17D025008E70BE /* FalseData.swift in Sources */,
+				87BDE9382B17CC0B008E70BE /* User.swift in Sources */,
+				87BDE9002B13580A008E70BE /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		87BDE90C2B13580B008E70BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87BDE9152B13580B008E70BE /* test_carplayTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		87BDE9122B13580B008E70BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 87BDE8F92B13580A008E70BE /* test-carplay */;
+			targetProxy = 87BDE9112B13580B008E70BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		87BDE9032B13580A008E70BE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87BDE9042B13580A008E70BE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		87BDE9082B13580B008E70BE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87BDE9092B13580B008E70BE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		87BDE9222B13580B008E70BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		87BDE9232B13580B008E70BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		87BDE9252B13580B008E70BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "$(PROJECT_DIR)/test-carplay/Entitlements.plist";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "test-carplay/Info.plist";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmotoc.test-carplay";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		87BDE9262B13580B008E70BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "$(PROJECT_DIR)/test-carplay/Entitlements.plist";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "test-carplay/Info.plist";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmotoc.test-carplay";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		87BDE9282B13580B008E70BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmotoc.test-carplayTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/test-carplay.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/test-carplay";
+			};
+			name = Debug;
+		};
+		87BDE9292B13580B008E70BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexmotoc.test-carplayTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/test-carplay.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/test-carplay";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		87BDE8F52B135809008E70BE /* Build configuration list for PBXProject "test-carplay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87BDE9222B13580B008E70BE /* Debug */,
+				87BDE9232B13580B008E70BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		87BDE9242B13580B008E70BE /* Build configuration list for PBXNativeTarget "test-carplay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87BDE9252B13580B008E70BE /* Debug */,
+				87BDE9262B13580B008E70BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		87BDE9272B13580B008E70BE /* Build configuration list for PBXNativeTarget "test-carplayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87BDE9282B13580B008E70BE /* Debug */,
+				87BDE9292B13580B008E70BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 87BDE8F22B135809008E70BE /* Project object */;
+}
