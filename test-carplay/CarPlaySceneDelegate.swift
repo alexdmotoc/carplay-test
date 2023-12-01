@@ -14,6 +14,8 @@ final class CollectedInfo {
     var towDestination: MKMapItem?
 }
 
+private class PrerequisitesData {}
+
 final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
     
     enum Tab: Int, CaseIterable {
@@ -23,10 +25,9 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     }
     
     private let service = FalseData()
-    private var didPresentWelcomeScreen = false
-    private var cachedAdvisory: String?
     private var collectedInfo = CollectedInfo()
     private var isInternalRoadsideTabUpdate = false
+    private let prerequisitesData = PrerequisitesData()
     
     // MARK: - CPTemplateApplicationSceneDelegate
     
@@ -45,6 +46,7 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         
         interfaceController.setRootTemplate(mainTabTemplate, animated: false, completion: nil)
         fetchDataForRoadsideTab()
+        presentWelcomeScreen()
         
         User.shared.didChangeLoginStatus = { _ in
             self.updateTabBar(self.mainTabTemplate, selectedIndex: self.selectedTabIndex)
@@ -59,7 +61,6 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     ) {
         self.interfaceController = nil
         selectedTabIndex = 0
-        cachedAdvisory = nil
         collectedInfo = .init()
         print("didDisconnect")
     }
@@ -128,19 +129,15 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
             items: items,
             actions: []
         )
+        template.userInfo = prerequisitesData
         setupRoadsideTab(for: template)
         return template
     }
     
-    private func makeWelcomeScreen(onDismiss: @escaping () -> Void) -> CPAlertTemplate {
+    private func makeWelcomeScreen() -> CPAlertTemplate {
         .init(titleVariants: ["Do not use the app while driving"], actions: [
             .init(title: "Dismiss", style: .cancel, handler: { [weak self] _ in
-                self?.interfaceController?.dismissTemplate(animated: true, completion: { _, _ in
-                    if let cachedAdvisory = self?.cachedAdvisory {
-                        self?.showAdvisory(message: cachedAdvisory)
-                    }
-                    onDismiss()
-                })
+                self?.interfaceController?.dismissTemplate(animated: true, completion: { _, _ in })
             })
         ])
     }
@@ -184,7 +181,6 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     
     private func updateTabBar(_ template: CPTabBarTemplate, selectedIndex: Int) {
         setupTabBar(template)
-        presentWelcomeScreenIfNeeded()
         template.selectTemplate(at: selectedIndex)
     }
     
@@ -200,10 +196,6 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
             guard let self else { return }
             switch result {
             case .success(let success):
-                guard didPresentWelcomeScreen else {
-                    cachedAdvisory = success
-                    return
-                }
                 showAdvisory(message: success)
             case .failure(let failure):
                 let alert = makeAlertTemplate(message: failure.localizedDescription)
@@ -342,13 +334,9 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         mainTabTemplate.templates.count == Tab.allCases.count && Tab(rawValue: selectedTabIndex) == .roadsideAssistance
     }
     
-    private func presentWelcomeScreenIfNeeded() {
-        if isRoadsideTabSelected, !didPresentWelcomeScreen, mainTabTemplate.selectedTemplate == selectIssueTemplate {
-            let welcomeScreen = makeWelcomeScreen { [weak self] in
-                self?.didPresentWelcomeScreen = true
-            }
-            interfaceController?.presentTemplate(welcomeScreen, animated: true, completion: { _, _ in })
-        }
+    private func presentWelcomeScreen() {
+        let welcomeScreen = makeWelcomeScreen()
+        interfaceController?.presentTemplate(welcomeScreen, animated: true, completion: { _, _ in })
     }
     
     private func make4WDSelectionScreen(selection: @escaping (Bool) -> Void) -> CPAlertTemplate {
@@ -428,14 +416,13 @@ extension CLAuthorizationStatus {
 extension CarPlaySceneDelegate: CPTabBarTemplateDelegate {
     func tabBarTemplate(_ tabBarTemplate: CPTabBarTemplate, didSelect selectedTemplate: CPTemplate) {
         selectedTabIndex = tabBarTemplate.templates.firstIndex(of: selectedTemplate) ?? 0
-        presentWelcomeScreenIfNeeded()
         
         // recreate the flow only if the roadside tab is selected and the user is somewhere other than root in the hierarchy
         if isInternalRoadsideTabUpdate {
             isInternalRoadsideTabUpdate.toggle()
             return
         }
-        if selectedTemplate == selectIssueTemplate { return }
+        if selectedTemplate == selectIssueTemplate || (selectedTemplate.userInfo as? PrerequisitesData) === prerequisitesData { return }
         guard tabBarTemplate.templates.count == Tab.allCases.count, Tab(rawValue: selectedTabIndex) == .roadsideAssistance else { return }
         updateTabBar(mainTabTemplate, selectedIndex: selectedTabIndex)
     }
