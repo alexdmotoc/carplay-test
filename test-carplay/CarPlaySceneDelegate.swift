@@ -7,7 +7,28 @@
 
 import CarPlay
 
+final class CollectedInfo {
+    var issue: FalseData.IssueData?
+    var car: FalseData.Car?
+    var is4WD = false
+    var towDestination: MKMapItem?
+}
+
 final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
+    
+    enum Tab: Int, CaseIterable {
+        case gasStations
+        case roadsideAssistance
+        case evCharging
+    }
+    
+    private let service = FalseData()
+    private var didPresentWelcomeScreen = false
+    private var cachedAdvisory: String?
+    private var collectedInfo = CollectedInfo()
+    private var isInternalRoadsideTabUpdate = false
+    
+    // MARK: - CPTemplateApplicationSceneDelegate
     
     private var interfaceController: CPInterfaceController?
     private lazy var locationManager: CLLocationManager = {
@@ -23,6 +44,7 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         self.interfaceController = interfaceController
         
         interfaceController.setRootTemplate(mainTabTemplate, animated: false, completion: nil)
+        fetchDataForRoadsideTab()
         
         User.shared.didChangeLoginStatus = { _ in
             self.updateTabBar(self.mainTabTemplate, selectedIndex: self.selectedTabIndex)
@@ -37,6 +59,8 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     ) {
         self.interfaceController = nil
         selectedTabIndex = 0
+        cachedAdvisory = nil
+        collectedInfo = .init()
         print("didDisconnect")
     }
     
@@ -47,7 +71,7 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     private lazy var mainTabTemplate: CPTabBarTemplate = {
         let template = CPTabBarTemplate(templates: [])
         template.delegate = self
-        updateTabBar(template, selectedIndex: selectedTabIndex)
+        setupTabBar(template)
         return template
     }()
     
@@ -73,7 +97,21 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         return template
     }()
     
-    private func makeWelcomeScreen() -> CPInformationTemplate {
+    private lazy var selectIssueTemplate: CPGridTemplate = {
+        let template = CPGridTemplate(title: "Select issue", gridButtons: [])
+        setupRoadsideTab(for: template)
+        return template
+    }()
+    
+    private lazy var selectCarTemplate: CPListTemplate = {
+        .init(title: "Select car", sections: [])
+    }()
+    
+    private lazy var selectTowDestinationTemplate: CPPointOfInterestTemplate = {
+        .init(title: "Select tow destination", pointsOfInterest: [], selectedIndex: NSNotFound)
+    }()
+    
+    private func makePrerequisitesNotSatisfiedScreen() -> CPInformationTemplate {
         var items: [CPInformationItem] = []
         if !User.shared.isLoggedIn {
             items.append(.init(title: "Login required", detail: "You need to be logged in before proceeding further"))
@@ -94,8 +132,26 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         return template
     }
     
-    private func makeLoadingScreen() -> CPAlertTemplate {
-        let template = CPAlertTemplate(titleVariants: ["Loading..."], actions: [])
+    private func makeWelcomeScreen(onDismiss: @escaping () -> Void) -> CPAlertTemplate {
+        .init(titleVariants: ["Do not use the app while driving"], actions: [
+            .init(title: "Dismiss", style: .cancel, handler: { [weak self] _ in
+                self?.interfaceController?.dismissTemplate(animated: true, completion: { _, _ in
+                    if let cachedAdvisory = self?.cachedAdvisory {
+                        self?.showAdvisory(message: cachedAdvisory)
+                    }
+                    onDismiss()
+                })
+            })
+        ])
+    }
+    
+    private func makeLoadingScreen() -> CPInformationTemplate {
+        let template = CPInformationTemplate(
+            title: "Please wait",
+            layout: .leading,
+            items: [.init(title: "We are loading some data", detail: nil)],
+            actions: []
+        )
         setupRoadsideTab(for: template)
         return template
     }
@@ -120,15 +176,185 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         template.tabImage = UIImage(systemName: "wrench.and.screwdriver")
     }
     
-    private func updateTabBar(_ template: CPTabBarTemplate, selectedIndex: Int) {
-        let roadsideTemplate = isLocationEnabled && User.shared.isLoggedIn ? makeLoadingScreen() : makeWelcomeScreen()
+    private func setupTabBar(_ template: CPTabBarTemplate) {
+        let isShowingRoadsideTab = isLocationEnabled && User.shared.isLoggedIn
+        let roadsideTemplate = isShowingRoadsideTab ? selectIssueTemplate : makePrerequisitesNotSatisfiedScreen()
         template.updateTemplates([gasStationsTemplate, roadsideTemplate, evChargingStationsTemplate])
+    }
+    
+    private func updateTabBar(_ template: CPTabBarTemplate, selectedIndex: Int) {
+        setupTabBar(template)
+        presentWelcomeScreenIfNeeded()
         template.selectTemplate(at: selectedIndex)
+    }
+    
+    private func updateRoadsideTab(with template: CPTemplate) {
+        isInternalRoadsideTabUpdate = true
+        setupRoadsideTab(for: template)
+        mainTabTemplate.updateTemplates([gasStationsTemplate, template, evChargingStationsTemplate])
+        mainTabTemplate.selectTemplate(at: selectedTabIndex)
+    }
+    
+    private func fetchDataForRoadsideTab() {
+        service.getAdvisory { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let success):
+                guard didPresentWelcomeScreen else {
+                    cachedAdvisory = success
+                    return
+                }
+                showAdvisory(message: success)
+            case .failure(let failure):
+                let alert = makeAlertTemplate(message: failure.localizedDescription)
+                interfaceController?.presentTemplate(alert, animated: true, completion: nil)
+            }
+        }
+        
+        service.getIssues { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let issues):
+                let buttons = issues.map { issue in
+                    CPGridButton(
+                        titleVariants: [issue.name],
+                        image: UIImage(systemName: issue.systemIconName)!,
+                        handler: { _ in
+                            self.didSelectIssue(issue)
+                        }
+                    )
+                }
+                selectIssueTemplate.updateGridButtons(buttons)
+            case .failure(let error):
+                let alert = makeAlertTemplate(message: error.localizedDescription)
+                interfaceController?.presentTemplate(alert, animated: true, completion: nil)
+            }
+        }
+        
+        service.getCars { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let cars):
+                let items = cars.map { car in
+                    let item = CPListItem(text: car.name, detailText: car.color)
+                    item.handler = { _, completion in
+                        self.didSelectCarItem(car, completion: completion)
+                    }
+                    return item
+                }
+                let section = CPListSection(items: items)
+                selectCarTemplate.updateSections([section])
+            case .failure(let error):
+                let alert = makeAlertTemplate(message: error.localizedDescription)
+                interfaceController?.presentTemplate(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func fetchTowDestinations(completion: @escaping () -> Void) {
+        service.getTowDestinations { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let towDestinations):
+                let pois = towDestinations.map { destination in
+                    let poi = CPPointOfInterest(
+                        location: destination,
+                        title: destination.name ?? "",
+                        subtitle: (destination.name ?? "") + " subtitle",
+                        summary: (destination.name ?? "") + " summary",
+                        detailTitle: destination.name ?? "",
+                        detailSubtitle: (destination.name ?? "") + " detail subtitle",
+                        detailSummary: (destination.name ?? "") + " detail summary",
+                        pinImage: nil
+                    )
+                    poi.primaryButton = .init(title: "Select", textStyle: .confirm, handler: { _ in
+                        self.didSelectTowLocation(destination)
+                    })
+                    return poi
+                }
+                selectTowDestinationTemplate.setPointsOfInterest(pois, selectedIndex: NSNotFound)
+            case .failure(let error):
+                let alert = makeAlertTemplate(message: error.localizedDescription)
+                interfaceController?.presentTemplate(alert, animated: true, completion: nil)
+            }
+            
+            completion()
+        }
+    }
+    
+    private func didSelectCarItem(_ car: FalseData.Car, completion: @escaping () -> Void) {
+        collectedInfo.car = car
+        fetchTowDestinations { [weak self] in
+            defer { completion() }
+            guard let self else { return }
+            interfaceController?.presentTemplate(make4WDSelectionScreen(selection: { is4WD in
+                self.collectedInfo.is4WD = is4WD
+                self.interfaceController?.dismissTemplate(animated: true, completion: { _, _ in
+                    self.updateRoadsideTab(with: self.selectTowDestinationTemplate)
+                })
+            }), animated: true, completion: nil)
+        }
+    }
+    
+    private func didSelectTowLocation(_ location: MKMapItem) {
+        collectedInfo.towDestination = location
+        print("show tow destination detail")
+    }
+    
+    private func didSelectIssue(_ issue: FalseData.IssueData) {
+        collectedInfo.issue = issue
+        updateRoadsideTab(with: selectCarTemplate)
+    }
+    
+    private func showAdvisory(message: String) {
+        let alert = makeAlertTemplate(message: message)
+        interfaceController?.presentTemplate(alert, animated: true, completion: nil)
+    }
+    
+    private func makeAlertTemplate(message: String, handler: (() -> Void)? = nil) -> CPAlertTemplate {
+        .init(
+            titleVariants: [message],
+            actions: [
+                .init(
+                    title: "Dismiss",
+                    style: .cancel,
+                    handler: { [weak self] _ in
+                        self?.interfaceController?.dismissTemplate(animated: true, completion: nil)
+                        handler?()
+                    }
+                )
+            ]
+        )
     }
     
     private var isLocationEnabled: Bool {
         locationManager.authorizationStatus.isAuthorized &&
         locationManager.accuracyAuthorization == .fullAccuracy
+    }
+    
+    private var isRoadsideTabSelected: Bool {
+        mainTabTemplate.templates.count == Tab.allCases.count && Tab(rawValue: selectedTabIndex) == .roadsideAssistance
+    }
+    
+    private func presentWelcomeScreenIfNeeded() {
+        if isRoadsideTabSelected, !didPresentWelcomeScreen, mainTabTemplate.selectedTemplate == selectIssueTemplate {
+            let welcomeScreen = makeWelcomeScreen { [weak self] in
+                self?.didPresentWelcomeScreen = true
+            }
+            interfaceController?.presentTemplate(welcomeScreen, animated: true, completion: { _, _ in })
+        }
+    }
+    
+    private func make4WDSelectionScreen(selection: @escaping (Bool) -> Void) -> CPAlertTemplate {
+        .init(titleVariants: ["Is it a 4WD or AWD car?"], actions: [
+            .init(title: "Yes", style: .default, handler: { _ in
+                selection(true)
+            }),
+            .init(title: "No", style: .default, handler: { _ in
+                selection(false)
+            })
+        ])
     }
 }
 
@@ -140,12 +366,22 @@ extension CarPlaySceneDelegate: CLLocationManagerDelegate {
 
 extension CLAuthorizationStatus {
     var isAuthorized: Bool {
-       self == .authorizedWhenInUse || self == .authorizedAlways
+        self == .authorizedWhenInUse || self == .authorizedAlways
     }
 }
 
 extension CarPlaySceneDelegate: CPTabBarTemplateDelegate {
     func tabBarTemplate(_ tabBarTemplate: CPTabBarTemplate, didSelect selectedTemplate: CPTemplate) {
         selectedTabIndex = tabBarTemplate.templates.firstIndex(of: selectedTemplate) ?? 0
+        presentWelcomeScreenIfNeeded()
+        
+        // recreate the flow only if the roadside tab is selected and the user is somewhere other than root in the hierarchy
+        if isInternalRoadsideTabUpdate {
+            isInternalRoadsideTabUpdate.toggle()
+            return
+        }
+        if selectedTemplate == selectIssueTemplate { return }
+        guard tabBarTemplate.templates.count == Tab.allCases.count, Tab(rawValue: selectedTabIndex) == .roadsideAssistance else { return }
+        updateTabBar(mainTabTemplate, selectedIndex: selectedTabIndex)
     }
 }

@@ -24,12 +24,22 @@
                                     <action selector="didTapLogin" destination="BYZ-38-t0r" eventType="touchUpInside" id="onE-Ly-jdH"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Qv-5XP">
+                                <rect key="frame" x="126.66666666666669" y="102" width="140" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Enable location"/>
+                                <connections>
+                                    <action selector="didTapEnableLocation" destination="BYZ-38-t0r" eventType="touchUpInside" id="2qn-KB-oG3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="v9I-x9-D40" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="98I-0y-HA8"/>
+                            <constraint firstItem="hDg-Qv-5XP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ku2-Jw-FzO"/>
                             <constraint firstItem="v9I-x9-D40" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NHt-XQ-aOf"/>
+                            <constraint firstItem="hDg-Qv-5XP" firstAttribute="top" secondItem="v9I-x9-D40" secondAttribute="bottom" constant="8" symbolic="YES" id="d0f-u3-uA6"/>
                         </constraints>
                     </view>
                     <connections>
