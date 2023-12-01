@@ -28,6 +28,7 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     private var collectedInfo = CollectedInfo()
     private var isInternalRoadsideTabUpdate = false
     private let prerequisitesData = PrerequisitesData()
+    private var cachedAdvisory: String?
     
     // MARK: - CPTemplateApplicationSceneDelegate
     
@@ -99,7 +100,7 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     }()
     
     private lazy var selectIssueTemplate: CPGridTemplate = {
-        let template = CPGridTemplate(title: "Select issue", gridButtons: [])
+        let template = CPGridTemplate(title: "Assistance", gridButtons: [])
         setupRoadsideTab(for: template)
         return template
     }()
@@ -195,8 +196,12 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         service.getAdvisory { [weak self] result in
             guard let self else { return }
             switch result {
-            case .success(let success):
-                showAdvisory(message: success)
+            case .success(let advisory):
+                guard isRoadsideTabSelected else {
+                    cachedAdvisory = advisory
+                    return
+                }
+                showAdvisory(message: advisory)
             case .failure(let failure):
                 let alert = makeAlertTemplate(message: failure.localizedDescription)
                 interfaceController?.presentTemplate(alert, animated: true, completion: nil)
@@ -378,7 +383,7 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
                 .init(title: "4WD or AWD", detail: collectedInfo.is4WD ? "YES" : "NO"),
                 .init(title: "Tow to", detail: collectedInfo.towDestination?.name ?? "")
             ],
-            actions: [.init(title: "Confirm", textStyle: .confirm, handler: { button in
+            actions: [.init(title: "Send", textStyle: .confirm, handler: { button in
                 let alert = self.makeAlertTemplate(message: "Please wait while we process your request", hasDismiss: false)
                 self.interfaceController?.presentTemplate(alert, animated: true, completion: nil)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -417,13 +422,18 @@ extension CarPlaySceneDelegate: CPTabBarTemplateDelegate {
     func tabBarTemplate(_ tabBarTemplate: CPTabBarTemplate, didSelect selectedTemplate: CPTemplate) {
         selectedTabIndex = tabBarTemplate.templates.firstIndex(of: selectedTemplate) ?? 0
         
+        if let cachedAdvisory {
+            showAdvisory(message: cachedAdvisory)
+            self.cachedAdvisory = nil
+        }
+        
         // recreate the flow only if the roadside tab is selected and the user is somewhere other than root in the hierarchy
         if isInternalRoadsideTabUpdate {
             isInternalRoadsideTabUpdate.toggle()
             return
         }
         if selectedTemplate == selectIssueTemplate || (selectedTemplate.userInfo as? PrerequisitesData) === prerequisitesData { return }
-        guard tabBarTemplate.templates.count == Tab.allCases.count, Tab(rawValue: selectedTabIndex) == .roadsideAssistance else { return }
+        guard isRoadsideTabSelected else { return }
         updateTabBar(mainTabTemplate, selectedIndex: selectedTabIndex)
     }
 }
