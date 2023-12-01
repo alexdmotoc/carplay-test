@@ -299,7 +299,13 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
     
     private func didSelectTowLocation(_ location: MKMapItem) {
         collectedInfo.towDestination = location
-        print("show tow destination detail")
+        let detail = makeTowDestinationDetail { [weak self] in
+            guard let self else { return }
+            self.interfaceController?.popTemplate(animated: true, completion: { _, _ in
+                self.updateRoadsideTab(with: self.makeSummary())
+            })
+        }
+        interfaceController?.pushTemplate(detail, animated: true, completion: nil)
     }
     
     private func didSelectIssue(_ issue: FalseData.IssueData) {
@@ -312,19 +318,18 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
         interfaceController?.presentTemplate(alert, animated: true, completion: nil)
     }
     
-    private func makeAlertTemplate(message: String, handler: (() -> Void)? = nil) -> CPAlertTemplate {
-        .init(
+    private func makeAlertTemplate(message: String, hasDismiss: Bool = true, handler: (() -> Void)? = nil) -> CPAlertTemplate {
+        let dismiss = CPAlertAction(
+            title: "Dismiss",
+            style: .cancel,
+            handler: { [weak self] _ in
+                self?.interfaceController?.dismissTemplate(animated: true, completion: nil)
+                handler?()
+            }
+        )
+        return .init(
             titleVariants: [message],
-            actions: [
-                .init(
-                    title: "Dismiss",
-                    style: .cancel,
-                    handler: { [weak self] _ in
-                        self?.interfaceController?.dismissTemplate(animated: true, completion: nil)
-                        handler?()
-                    }
-                )
-            ]
+            actions: hasDismiss ? [dismiss] : []
         )
     }
     
@@ -355,6 +360,56 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
                 selection(false)
             })
         ])
+    }
+    
+    private func makeTowDestinationDetail(handler: @escaping () -> Void) -> CPInformationTemplate {
+        .init(
+            title: "Tow destintaion detail",
+            layout: .leading,
+            items: [
+                .init(title: nil, detail: "AAA memebers receive a 10% labour discount on repairs performed at this facility. The maximum labour discount is $75."),
+                .init(title: nil, detail: "Services excluded from this offer include: Not to be used with any other discount, special, sale or menu priced item or service"),
+                .init(title: "Repair services", detail: "Air conditioning, Automatic transmission, Brakes, Clutch/Driveline, Cooling/Radiator, Electrical, Engine, Overhaul/Replace, Gas engine, Diagnostics, Hybrid powertrains, etc.")
+            ],
+            actions: [
+                .init(title: "Confirm", textStyle: .confirm, handler: { _ in
+                    handler()
+                })
+            ]
+        )
+    }
+    
+    private func makeSummary() -> CPInformationTemplate {
+        .init(
+            title: "Summary",
+            layout: .twoColumn,
+            items: [
+                .init(title: "Location", detail: "Current user's location, formatted"),
+                .init(title: "Issue", detail: collectedInfo.issue?.name ?? ""),
+                .init(title: "Vehicle", detail: collectedInfo.car?.name ?? ""),
+                .init(title: "4WD or AWD", detail: collectedInfo.is4WD ? "YES" : "NO"),
+                .init(title: "Tow to", detail: collectedInfo.towDestination?.name ?? "")
+            ],
+            actions: [.init(title: "Confirm", textStyle: .confirm, handler: { button in
+                let alert = self.makeAlertTemplate(message: "Please wait while we process your request", hasDismiss: false)
+                self.interfaceController?.presentTemplate(alert, animated: true, completion: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.interfaceController?.dismissTemplate(animated: true, completion: nil)
+                    self.updateRoadsideTab(with: self.makeRequestSent())
+                }
+            })]
+        )
+    }
+    
+    private func makeRequestSent() -> CPInformationTemplate {
+        .init(
+            title: "Request sent",
+            layout: .leading,
+            items: [
+                .init(title: nil, detail: "Your call has been successfully submitted"),
+            ],
+            actions: []
+        )
     }
 }
 
